@@ -13,4 +13,5 @@ class SpidItem(scrapy.Item):
     price = scrapy.Field()
     url = scrapy.Field()
     title = scrapy.Field()
+    category = scrapy.Field()
 

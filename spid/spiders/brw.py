@@ -18,6 +18,6 @@ class MoreleSpider(CrawlSpider):
         item = SpidItem()
         item['price']= response.css('div[class=cena] *::text').extract_first().rstrip().replace('\r\n\t\t\t\t\t\t\t\t\t\t\t','').replace(',-','')
         item['url'] = response.url
-        print(item)
+        item['title']= response.xpath('//title/text()').extract_first()
         yield item
 
