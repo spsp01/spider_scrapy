@@ -16,9 +16,11 @@ class CeneoSpider(CrawlSpider):
 
     def parse_item(self, response):
         category = CategoryItem()
+        category['id'] = response.xpath('//nav/dl/dd/span/@data-category-id').extract()[-1]
+        category['name'] = response.xpath('//nav/dl/dd/span/a/span/text()').extract()[-1]
+        category['parent category id']=response.xpath('//nav/dl/dd/span/@data-category-id').extract()[-2]
+        print(category)
+        return category
 
-        #i['domain_id'] = response.xpath('//input[@id="sid"]/@value').extract()
-        #i['name'] = response.xpath('//div[@id="name"]').extract()
-        #i['description'] = response.xpath('//div[@id="description"]').extract()
-        return i
-    def category
+
+
