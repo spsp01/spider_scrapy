@@ -56,10 +56,10 @@ class CeneoSpider(CrawlSpider):
         # Example category page:  https://www.ceneo.pl/43598790
 
         if response.xpath('//table[contains(@class,"product-offers")]'):
-            shop_id = response.xpath(
-                '//table[contains(@class,"product-offers")]/tbody/tr[@data-trackinfotype="Click"]/@data-shop').extract()
-            product_id = response.xpath(
-                '//table[contains(@class,"product-offers")]/tbody/tr[@data-trackinfotype="Click"]/@data-productid').extract()
+            shop_id = response.xpath('//table[contains(@class,"product-offers")]/tbody'
+                                     '/tr[@data-trackinfotype="Click"]/@data-shop').extract()
+            product_id = response.xpath('//table[contains(@class,"product-offers")]/tbody'
+                                        '/tr[@data-trackinfotype="Click"]/@data-productid').extract()
             price = self.price_sum(response)
             price_and_shipment = self.price_and_shipment(response, price)
 
@@ -75,10 +75,10 @@ class CeneoSpider(CrawlSpider):
         """
         Sums main value and penny value
         """
-        value = response.xpath(
-            '//table[contains(@class,"product-offers")]/tbody/tr/td[@class="cell-price"]/a/span/span/span[@class="value"]/text()').extract()
-        penny = response.xpath(
-            '//table[contains(@class,"product-offers")]/tbody/tr/td[@class="cell-price"]/a/span/span/span[@class="penny"]/text()').extract()
+        value = response.xpath('//table[contains(@class,"product-offers")]/tbody/tr/td[@class="cell-price"]'
+                               '/a/span/span/span[@class="value"]/text()').extract()
+        penny = response.xpath('//table[contains(@class,"product-offers")]/tbody/tr/td[@class="cell-price"]'
+                               '/a/span/span/span[@class="penny"]/text()').extract()
 
         penny_float = []
 
@@ -94,16 +94,16 @@ class CeneoSpider(CrawlSpider):
         """
         Returns price and shipment value
         """
-        rows = response.xpath(
-            '//table[contains(@class,"product-offers")]/tbody/tr/td[@class="cell-price"]/div[@class="align-right"]/div').extract()
+        rows = response.xpath('//table[contains(@class,"product-offers")]/tbody/tr/td[@class="cell-price"]'
+                              '/div[@class="align-right"]/div').extract()
         price_ship = []
 
         for idx, i in enumerate(rows):
             if 'Z wysyłką' in i:
                 soup = BeautifulSoup(i, 'lxml')
                 pricefloat = float(
-                    soup.get_text().strip().replace('Z wysyłką od\r\n', '').replace(' ', '').replace('zł', '').replace(
-                        ',', '.'))
+                    soup.get_text().strip().replace('Z wysyłką od\r\n', '').replace(' ', '').replace('zł', '')
+                        .replace(',', '.'))
                 price_ship.append(pricefloat)
 
             else:
