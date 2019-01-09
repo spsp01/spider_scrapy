@@ -60,7 +60,9 @@ class CeneoSpider(CrawlSpider):
             product_id = response.xpath('//table[contains(@class,"product-offers")]/tbody/tr[@data-trackinfotype="Click"]/@data-productid').extract()
             price = self.price_sum(response)
             price_and_shipment = self.price_and_shipment(response)
+            #print(len(price),len(price_and_shipment))
             for idx, i in enumerate(shop_id):
+
                 product_price = ProductPriceItem()
                 product_price['shop_id']= shop_id[idx]
                 product_price['product_id'] = product_id[idx]
@@ -89,16 +91,17 @@ class CeneoSpider(CrawlSpider):
         """
         Returns price and shipment value
         """
-        rows = response.xpath('//table[contains(@class,"product-offers")]/tbody/tr/td[@class="cell-price"]//div[@class="product-delivery-info js_deliveryInfo"]').extract()
+        rows = response.xpath('//table[contains(@class,"product-offers")]/tbody/tr/td[@class="cell-price"]/div[@class="align-right"]/div/node()').extract()
         price_ship = []
 
         for i in rows:
-            #print(rows)
             if 'Z wysyłką' in i:
-                price_ship.append(i.strip().replace('Z wysyłką od\r\n','').replace(' ','').replace('zł',''))
+                 price_ship.append(i.strip().replace('Z wysyłką od\r\n','').replace(' ','').replace('zł',''))
+                 #print("z wysyłką")
             if 'Darmowa wysyłka' in i:
                 price_ship.append(0)
+                #print("darmowa")
             if not 'Z wysyłką' and 'Darmowa wysyłka' in i:
-                price_ship.append('N/A')
-        print(price_ship)
+                 price_ship.append('N/A')
+       # print(price_ship)
         return price_ship
