@@ -46,6 +46,7 @@ class LinkCheckerSpider(scrapy.Spider):
         from_text = ''
         depth = 5;
         f = open('a.txt', 'a', encoding='UTF-8')
+        print(response.meta)
 
         # Extract the meta information from the response, if any
         if 'from' in response.meta: from_url = response.meta['from']
@@ -68,7 +69,7 @@ class LinkCheckerSpider(scrapy.Spider):
             self.valid_url.append({'url': response.url,
                                    'from': from_url,
                                    'text': from_text})
-            print(from_url + ('; ')+ response.url + ('; ')+ response.xpath("//title/text()").extract_first())
+            #print(from_url + ('; ')+ response.url + ('; ')+ response.xpath("//title/text()").extract_first())
 
             # Extract domain of current page
             parsed_uri = urlparse(response.url)

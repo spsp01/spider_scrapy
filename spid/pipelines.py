@@ -4,14 +4,14 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
-from scrapy.exceptions import DropItem
 
-class PricePipeline(object):
+from scrapy.exceptions import DropItem
+class SpidPipeline(object):
+    def __init__(self):
+        self.ids_seen = set()
 
     def process_item(self, item, spider):
-        if item['price']:
-               return item
-        else:
-            raise DropItem("Missing price in %s" % item)
 
-
+        if 'thumbnail_url' in item:
+            print(item)
+        return item

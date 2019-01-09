@@ -20,7 +20,7 @@ NEWSPIDER_MODULE = 'spid.spiders'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
-LOG_LEVEL = 'CRITICAL'
+LOG_LEVEL = 'INFO'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -66,7 +66,7 @@ LOG_LEVEL = 'CRITICAL'
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'spid.pipelines.PricePipeline': 300,
+    'spid.pipelines.SpidPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -89,3 +89,9 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+FEED_EXPORTERS = {
+ 'jsonlines': 'scrapy.contrib.exporter.JsonItemExporter',
+}
+FEED_FORMAT = 'json'
+FEED_URI = "tmp/result-%(time)s.json"
