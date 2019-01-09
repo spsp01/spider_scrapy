@@ -9,6 +9,31 @@ import scrapy
 
 
 class SpidItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+
+    price = scrapy.Field()
+    url = scrapy.Field()
+    title = scrapy.Field()
+    category = scrapy.Field()
+
+class CategoryItem(scrapy.Item):
+
+    id = scrapy.Field()
+    name = scrapy.Field()
+    patent_category_id = scrapy.Field()
+
+class ProductItem(scrapy.Item):
+    name = scrapy.Field()
+    category_id = scrapy.Field()
+    thumbnail_url = scrapy.Field()
+    url = scrapy.Field()
+
+class ShopItem(scrapy.Item):
+    name = scrapy.Field()
+    url = scrapy.Field()
+    thumbnail_url = scrapy.Field()
+
+class ProductPriceItem(scrapy.Item):
+    shop_id = scrapy.Field()
+    product_id = scrapy.Field()
+    price = scrapy.Field()
+    price_and_shipment = scrapy.Field()
