@@ -20,7 +20,7 @@ NEWSPIDER_MODULE = 'spid.spiders'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
-LOG_LEVEL = 'CRITICAL'
+LOG_LEVEL = 'INFO'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -89,3 +89,9 @@ LOG_LEVEL = 'CRITICAL'
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+FEED_EXPORTERS = {
+ 'jsonlines': 'scrapy.contrib.exporter.JsonLinesItemExporter',
+}
+FEED_FORMAT = 'jsonlines'
+FEED_URI = "tmp/result-%(time)s.json"

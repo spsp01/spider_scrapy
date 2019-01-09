@@ -19,7 +19,7 @@ class CategoryItem(scrapy.Item):
 
     id = scrapy.Field()
     name = scrapy.Field()
-    patent_category_id = scrapy.Field()
+    parent_category_id = scrapy.Field()
 
 class ProductItem(scrapy.Item):
     name = scrapy.Field()
