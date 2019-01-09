@@ -67,6 +67,7 @@ LOG_LEVEL = 'INFO'
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'spid.pipelines.SpidPipeline': 300,
+    'spid.pipelines.DuplicatesPipeline':800,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

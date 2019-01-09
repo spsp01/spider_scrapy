@@ -6,12 +6,33 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 from scrapy.exceptions import DropItem
+
+
 class SpidPipeline(object):
+    def process_item(self, item, spider):
+        return item
+
+
+class DuplicatesPipeline(object):
+
     def __init__(self):
-        self.ids_seen = set()
+        self.category_seen = set()
+        self.product_seen = set()
 
     def process_item(self, item, spider):
+        if 'id' and 'name' and 'parent_category_id' in item.keys():
+            if item['id'] in self.category_seen:
+                raise DropItem("Duplicate item found: %s" % item)
+            else:
+                self.category_seen.add(item['id'])
+                return item
 
-        if 'thumbnail_url' in item:
-            print(item)
+        if 'name' and 'category_id' and 'thumbnail_url' and 'url' in item.keys():
+            print(item.keys())
+            if item['url'] in self.product_seen:
+                raise DropItem("Duplicate item found: %s" % item)
+            else:
+                self.product_seen.add(item['url'])
+               # print(item['url'])
+                return item
         return item

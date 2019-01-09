@@ -9,17 +9,17 @@ import scrapy
 
 
 class SpidItem(scrapy.Item):
-
     price = scrapy.Field()
     url = scrapy.Field()
     title = scrapy.Field()
     category = scrapy.Field()
 
-class CategoryItem(scrapy.Item):
 
+class CategoryItem(scrapy.Item):
     id = scrapy.Field()
     name = scrapy.Field()
     parent_category_id = scrapy.Field()
+
 
 class ProductItem(scrapy.Item):
     name = scrapy.Field()
@@ -27,10 +27,12 @@ class ProductItem(scrapy.Item):
     thumbnail_url = scrapy.Field()
     url = scrapy.Field()
 
+
 class ShopItem(scrapy.Item):
     name = scrapy.Field()
     url = scrapy.Field()
     thumbnail_url = scrapy.Field()
+
 
 class ProductPriceItem(scrapy.Item):
     shop_id = scrapy.Field()
