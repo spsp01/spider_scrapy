@@ -64,6 +64,8 @@ class CeneoSpider(CrawlSpider):
                                         '/tr[@data-trackinfotype="Click"]/@data-productid').extract()
             price = self.price_sum(response)
             price_and_shipment = self.price_and_shipment(response, price)
+            product_url = response.xpath('//td[@class="cell-actions"]/a[contains(@class,"go-to-shop")]/@href').extract()
+
 
             for idx, i in enumerate(shop_id):
                 product_price = ProductPriceItem()
@@ -71,6 +73,8 @@ class CeneoSpider(CrawlSpider):
                 product_price['product_id'] = product_id[idx]
                 product_price['price'] = price[idx]
                 product_price['price_and_shipment'] = price_and_shipment[idx]
+                product_price['product_url'] =  'https://www.ceneo.pl/'+product_url[idx]
+
                 yield product_price
 
     def price_sum(self, response):

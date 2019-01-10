@@ -50,42 +50,48 @@ class DuplicatesExportPipeline(object):
         self.product_price_file.close()
 
     def process_item(self, item, spider):
-        if 'id' in item.keys() and 'name' in item.keys() and 'parent_category_id' in item.keys():
 
+        if 'id' in item.keys() and 'name' in item.keys() and 'parent_category_id' in item.keys():
+            # Drops duplicates in category
             if item['id'] in self.category_seen:
                 raise DropItem("Duplicate category item found: %s" % item)
             else:
                 self.category_seen.add(item['id'])
+                # Exports category item
                 self.category_exporter.export_item(item)
                 return item
 
         if 'name' in item.keys() and 'category_id' in item.keys() and 'thumbnail_url' in item.keys() and 'url' in item.keys():
+            # Drops duplicates in products
 
             if item['url'] in self.product_seen:
                 raise DropItem("Duplicate product item found: %s" % item)
             else:
                 self.product_seen.add(item['url'])
+                # Exports category item
                 self.product_exporter.export_item(item)
                 return item
 
         if 'name' in item.keys() and 'url' in item.keys() and 'thumbnail_url' in item.keys():
-
+            # Drops duplicates in shops
             if item['url'] in self.shop_seen:
                 print('Duplicate-Shop-found')
                 raise DropItem("Duplicate shop item found: %s" % item)
 
             else:
-
                 self.shop_seen.add(item['url'])
+                # Exports shop item
                 self.shop_exporter.export_item(item)
                 return item
 
         if 'shop_id' in item.keys() and 'product_id' in item.keys() and 'price' in item.keys() and 'price_and_shipment' in item.keys():
-
+            # Drops duplicates in product price
+            print(item)
             if item['shop_id'] + '-' + item['product_id'] in self.product_price_seen:
                 raise DropItem("Duplicate product price item found: %s" % item)
             else:
                 self.product_price_seen.add(item['shop_id'] + '-' + item['product_id'])
+                # Exports product price item
                 self.product_price_exporter.export_item(item)
                 return item
 

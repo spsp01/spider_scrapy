@@ -26,8 +26,10 @@ class ProductItem(scrapy.Item):
     category_id = scrapy.Field()
     thumbnail_url = scrapy.Field()
     url = scrapy.Field()
+    product_url = scrapy.Field()
     score = scrapy.Field() #additional field
-    review_count = scrapy.Field()
+    review_count = scrapy.Field() #additional field
+
 
 
 class ShopItem(scrapy.Item):
