@@ -4,6 +4,8 @@ from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 from spid.items import CategoryItem, ProductPriceItem, ShopItem, ProductItem
 from bs4 import BeautifulSoup
+import requests
+from lxml import html
 
 
 class CeneoSpider(CrawlSpider):
@@ -12,7 +14,7 @@ class CeneoSpider(CrawlSpider):
     start_urls = ['https://www.ceneo.pl/']
 
     rules = (
-        Rule(LinkExtractor(deny=('\;','opinie-')), callback='parse_item', follow=True),
+        Rule(LinkExtractor(deny=('\;', 'opinie-')), callback='parse_item', follow=True),
     )
 
     def parse_item(self, response):
@@ -66,15 +68,14 @@ class CeneoSpider(CrawlSpider):
             price_and_shipment = self.price_and_shipment(response, price)
             product_url = response.xpath('//td[@class="cell-actions"]/a[contains(@class,"go-to-shop")]/@href').extract()
 
-
             for idx, i in enumerate(shop_id):
                 product_price = ProductPriceItem()
                 product_price['shop_id'] = shop_id[idx]
                 product_price['product_id'] = product_id[idx]
                 product_price['price'] = price[idx]
                 product_price['price_and_shipment'] = price_and_shipment[idx]
-                product_price['product_url'] =  'https://www.ceneo.pl/'+product_url[idx]
-
+                url = 'https://www.ceneo.pl/' + product_url[idx]
+                product_price['product_url'] = self.get_product_in_shop(url)
                 yield product_price
 
     def price_sum(self, response):
@@ -116,3 +117,9 @@ class CeneoSpider(CrawlSpider):
                 price_ship.append(price[idx])
 
         return price_ship
+
+    def get_product_in_shop(self, url):
+        html_text = requests.get(url).text
+        tree = html.fromstring(html_text)
+        product_url = tree.xpath('//meta/@content')[-1].replace('1.5;url=', '')
+        return product_url
