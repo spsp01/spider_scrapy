@@ -38,6 +38,7 @@ class CeneoSpider(CrawlSpider):
             product['thumbnail_url'] = response.xpath('//div[@id="product-carousel"]/div/a/img/@src').extract_first()
             product['url'] = response.url
             product['score'] = response.xpath('//span[@class="product-score"]/@content').extract_first()
+            product['review_count'] = response.xpath('//span[@itemprop="reviewCount"]/text()').extract_first()
             print(product)
             yield product
 
