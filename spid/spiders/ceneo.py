@@ -12,7 +12,7 @@ class CeneoSpider(CrawlSpider):
     start_urls = ['https://www.ceneo.pl/']
 
     rules = (
-        Rule(LinkExtractor(deny=('\;')), callback='parse_item', follow=True),
+        Rule(LinkExtractor(deny=('\;','opinie-')), callback='parse_item', follow=True),
     )
 
     def parse_item(self, response):
@@ -37,7 +37,9 @@ class CeneoSpider(CrawlSpider):
             product['category_id'] = response.xpath('///nav/dl/dd/span/@data-category-id').extract()[-1]
             product['thumbnail_url'] = response.xpath('//div[@id="product-carousel"]/div/a/img/@src').extract_first()
             product['url'] = response.url
-
+            product['score'] = response.xpath('//span[@class="product-score"]/@content').extract_first()
+            product['review_count'] = response.xpath('//span[@itemprop="reviewCount"]/text()').extract_first()
+            print(product)
             yield product
 
         # Shop Item part
